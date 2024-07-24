@@ -902,8 +902,8 @@ flash mirvar(_MIPD_ int iv)
 
     //printf("x->len:%d x->w:%d %d %d %d\n",(char*)&x->len,(char*)&x->w,(char*)&x->w[0],x->w,x->w[0]);
 
-    // if (iv!=0) convert(_MIPP_ iv,x);
-    // MR_OUT 
+    if (iv!=0) convert(_MIPP_ iv,x);
+    	MR_OUT 
 
     return x;
 }

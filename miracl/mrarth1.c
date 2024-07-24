@@ -822,7 +822,6 @@ void bytes_to_big(_MIPD_ int len,const char *ptr,big x)
 #ifndef MR_NOFULLWIDTH
         m=MIRACL/8;  
         n=len/m;
-        printf("P\n");
         r=len%m;
 		wrd=(mr_small)0;  
         if (r!=0)
@@ -837,24 +836,19 @@ void bytes_to_big(_MIPD_ int len,const char *ptr,big x)
             MR_OUT
             return;
         }
-        printf("A len:%d W:%d\n",(char*)&x->len,(char*)&x->w[0]);
         if (r!=0) 
         {
             n--;
             x->w[n]=wrd;
         }
-        printf("B len:%d w:%d\n",(char*)&x->len,(char*)&x->w[0]);
         for (i=n-1;i>=0;i--)
         {
-            printf("AAx->w[%d]=%d\n",i,x->w[i]);
             for (j=0;j<m;j++) 
             { 
                 wrd<<=8; 
                 wrd|=MR_TOBYTE(*ptr++); 
             }
-            printf("wrd:%u\n",wrd);
             x->w[i]=wrd;
-            printf("BBx->w[%d]=%u\n",i,x->w[i]);
         }
         mr_lzero(x);     /* needed */
 #endif

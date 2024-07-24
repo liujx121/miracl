@@ -671,13 +671,10 @@ void zero(flash x)
     if (x==NULL) return;
 #ifdef MR_FLASH
     n=mr_lent(x);
-    printf("B\n");
 #else
     n=(x->len&MR_OBITS);
-    printf("A\n");
 #endif
     g=x->w;
-    printf("n:%d x->len:%d &g:%d &x->w[0]:%d\n",n,x->len,(char *)&g,(char *)&x->w[0]);
     for (i=0;i<n;i++)
         g[i]=0;
 
@@ -897,13 +894,11 @@ flash mirvar(_MIPD_ int iv)
     }
     
     ptr=(char *)&x->w;
-    align=(unsigned long)(ptr+sizeof(mr_small *))%sizeof(mr_small);   
+    // align=(unsigned long)(ptr+sizeof(mr_small *))%sizeof(mr_small);   
 
-    x->w=(mr_small *)(ptr+sizeof(mr_small *)+sizeof(mr_small)-align); 
-    //x->w=(mr_small *)(ptr);  
+    // x->w=(mr_small *)(ptr+sizeof(mr_small *)+sizeof(mr_small)-align); 
+    x->w=(mr_small *)(ptr+sizeof(mr_small *));  
     
-    printf("x->len:%d x->w:%d %d\n",(char*)&x->len,(char*)&x->w,(char*)&x->w[0]);
-    printf("x->w[0]:%d\n",x->w[0]);
 
     //printf("x->len:%d x->w:%d %d %d %d\n",(char*)&x->len,(char*)&x->w,(char*)&x->w[0],x->w,x->w[0]);
 
@@ -929,10 +924,12 @@ flash mirvar_mem_variable(char *mem,int index,int sz)
 
     x=(big)&mem[offset+mr_size(sz)*index];
     ptr=(char *)&x->w;
-    align=(unsigned long)(ptr+sizeof(mr_small *))%sizeof(mr_small);   
-   // x->w=(mr_small *)(ptr);
- x->w=(mr_small *)(ptr+sizeof(mr_small *)+sizeof(mr_small)-align);   
-    //printf("C x->w:%d %d\n",x->w,(char *)&x->w);
+
+    x->w=(mr_small *)(ptr+sizeof(mr_small *));  
+//     align=(unsigned long)(ptr+sizeof(mr_small *))%sizeof(mr_small);   
+
+//  x->w=(mr_small *)(ptr+sizeof(mr_small *)+sizeof(mr_small)-align);   
+
 
     return x;
 }
@@ -1523,7 +1520,6 @@ void mr_lzero(big x)
     int m;
     s=(x->len&(MR_MSBIT));
     m=(int)(x->len&(MR_OBITS));
-    printf("3 m:%d len:%d %d\n",m,x->len,sizeof(x->w));
     while (m>0 && x->w[m-1]==0)
         m--;
     x->len=m;
